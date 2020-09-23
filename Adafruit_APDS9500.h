@@ -25,6 +25,9 @@
 #ifndef _ADAFRUIT_APDS9500_H
 #define _ADAFRUIT_APDS9500_H
 
+#define GESTURE_MODE 0
+#define RAW_MODE 1
+
 #include "Arduino.h"
 #include <Adafruit_BusIO_Register.h>
 #include <Adafruit_I2CDevice.h>
@@ -131,9 +134,10 @@ public:
              TwoWire *wire = &Wire);
 
   uint16_t getDetectedGestures(void);
+  bool init(uint8_t mode = GESTURE_MODE);
 
 private:
-  bool _init(void);
+  // bool _init(void);
   bool writeByte(uint8_t address, uint8_t value);
   uint8_t buffer[2];
 
