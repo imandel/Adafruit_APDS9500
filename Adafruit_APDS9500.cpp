@@ -70,6 +70,22 @@ bool Adafruit_APDS9500::begin(uint8_t i2c_address, TwoWire *wire) {
   return true;
 }
 bool Adafruit_APDS9500::init(uint8_t mode) {
+  if( mode == RAW_MODE){
+    if(!writeByte(APDS9500_R_RegBankSet), 1){
+      return false;
+    }
+    buffer[0] = APDS9500_PartID_L;
+    buffer[1] = 0;
+    if (!i2c_dev->write_then_read(buffer, 1, buffer, 2)) {
+      return false;
+    }
+    if ((buffer[1] << 8 | buffer[0]) != APDS9500_CHIP_ID) {
+      return false;
+    }
+    writeByte(APDS9500_R_RegBankSet, 0x01); // select bank 1
+    writeByte(APDS9500_R_SPIOUT_CSN_MODE,  0x01)
+
+  }
   if( mode == GESTURE_MODE ){
 
   if (!writeByte(APDS9500_R_RegBankSet, 0)) {

@@ -110,7 +110,7 @@
 
 // /* Image Controls */
 #define APDS9500_R_SRAM_Read_EnH 0x77 ///< Image control parameter
-
+#define APDS9500_R_SPIOUT_CSN_MODE  0x7E
 /////////////////////////////////////////////////////////////////
 
 /**
