@@ -1,5 +1,6 @@
-// Basic demo for accelerometer readings from the APDS9500
+#include <SPI.h>
 #include <Wire.h>
+
 #include <Adafruit_APDS9500.h>
 
 Adafruit_APDS9500 apds;
@@ -16,8 +17,8 @@ void setup(void) {
     while (1) { delay(10); }
   }
   Serial.println("APDS9500 Found!");
-  Serial.println("")
-
+  Serial.println("");
+  analogWrite(23, 24000000);
 }
 
 void loop() {
