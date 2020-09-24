@@ -4,9 +4,11 @@
  
 #define R_RegBankSel 0xEF
 #define reg_bank1   0x72
-#define R_SPIOUT_EnH  0x7E
-#define R_SRAM_Read_EnH 0x77 ///< Image control parameter
-
+#define Trigger   0x5B            //bank 0
+#define R_SRAM_Read_EnH 0x77      //bank 1
+#define R_SPIOUT_PXDNUM_1 0x7C    //bank 1
+#define R_SPIOUT_PXDNUM_2 0x7D    //bank 1
+#define R_SPIOUT_EnH    0x7E      //bank 1
 
 #define R_ImageHeight 0xAA  //bank 0
 #define R_ImageWidth 0xAB   //bank 0
@@ -30,6 +32,7 @@
 #define Cmd_DAvg_V 0x04      //bank 1
 #define Cmd_VFlip 0x04       //bank 1
 #define Cmd_HFlip 0x04       //bank 1
+
 
 
 Adafruit_APDS9500 apds;
@@ -56,10 +59,9 @@ void setup(void) {
   analogWrite(23, 24000000);
   //enable SPI by writing 0x01 to reg bank 1 
   apds_write_reg(R_RegBankSel, 0x01);
-  apds_write_reg(R_SRAM_Read_EnH, 0x01);
   apds_write_reg(reg_bank1, 0x01);
   apds_write_reg(R_SPIOUT_EnH, 0x01);
-  
+  apds_write_reg(R_SRAM_Read_EnH, 0x01);
 }
 void apds_write_reg(byte reg_addr, byte data) {
     apds_com_begin();
@@ -107,18 +109,17 @@ void loop() {
 void updateFrame() {
   for (int i = 0; i < numFrames; i++) {
     //trigger the capture
-    apds_write_reg(reg_bank1, 0x01);
-    apds_write_reg(R_SPIOUT_EnH, 0x01);
-//      Serial.println(apds_read_reg(R_SPIOUT_EnH));
-    //wait for at least two frames
+    apds_write_reg(R_RegBankSel, 0x01);
+    apds_write_reg(Trigger, 0x01);
+
     delayMicroseconds(1000);
-        for (int j = 0; j < 30; j++) {
-          for (int k = 0; k < 30; k++) {
-            //read individual pixels
-            frames[i][j][k] = (uint8_t)apds_read_reg(R_SPIOUT_EnH);
-            Serial.println(frames[i][j][k]);
-        }
-      }
+    for (int j = 0; j < 30; j++) {
+      for (int k = 0; k < 30; k++) {
+        //read individual pixels
+        frames[i][j][k] = (uint8_t)apds_read_reg(R_SPIOUT_PXDNUM_1);
+        Serial.println(frames[i][j][k]);
+       }
+     }
     
     delayMicroseconds(4);
   }
