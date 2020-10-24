@@ -47,21 +47,21 @@ const int cs = 15;
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
-
-  Serial.println("Adafruit APDS9500 test!");
-  if (clockgen.begin() != ERROR_NONE){
-    /* There was a problem detecting the IC ... check your connections */
-    Serial.print("Ooops, no Si5351 detected ... Check your wiring or I2C ADDR!");
-    while(1);
-  }
-  Serial.println("OK!");
-  clockgen.setupPLLInt(SI5351_PLL_A, 15);
-  //output = pll/(div + n/d) = 375/(15+10/16) = 24mhz
-  //clockgen.setupMultisynth(clock id 0 1 or 2, SI5351_PLL_x, pll, n, d);
-  clockgen.setupMultisynth(0, SI5351_PLL_A, 15, 10, 16);
-    
-    /* Enable the clocks */
-  clockgen.enableOutputs(true);
+//
+//  Serial.println("Adafruit APDS9500 test!");
+//  if (clockgen.begin() != ERROR_NONE){
+//    /* There was a problem detecting the IC ... check your connections */
+//    Serial.print("Ooops, no Si5351 detected ... Check your wiring or I2C ADDR!");
+//    while(1);
+//  }
+//  Serial.println("OK!");
+//  clockgen.setupPLLInt(SI5351_PLL_A, 15);
+//  //output = pll/(div + n/d) = 375/(15+10/16) = 24mhz
+//  //clockgen.setupMultisynth(clock id 0 1 or 2, SI5351_PLL_x, pll, n, d);
+//  clockgen.setupMultisynth(0, SI5351_PLL_A, 15, 10, 16);
+//    
+//    /* Enable the clocks */
+//  clockgen.enableOutputs(true);
   delay(10);
   // Try to initialize
   if (! apds.begin()) {
@@ -120,7 +120,7 @@ void apds_com_end() {
 void loop() {
   Serial.println("here");
 
-  apds_write_reg(R_RegBankSel, 0x01);
+//  apds_write_reg(R_RegBankSel, 0x01);
   apds_write_reg(Trigger, 0x01);
   Serial.println(apds_read_reg(R_SPIOUT_PXDNUM_1));
   Serial.println(apds_read_reg(R_SPIOUT_PXDNUM_2));
